@@ -64,7 +64,7 @@ def run(
             console.print(f"[red]✗ Test failed after {result['attempts']} attempts[/red]")
     
     # Start scheduler
-    scheduler = SpeedTestScheduler(perform_test, immediate=immediate)
+    scheduler = SpeedTestScheduler(perform_test, immediate=immediate, interval=interval)
     
     console.print(Panel.fit(
         f"[bold]Internet Speed Monitor Started[/bold]\n\n"

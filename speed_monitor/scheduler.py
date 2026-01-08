@@ -11,9 +11,10 @@ logger = logging.getLogger(__name__)
 class SpeedTestScheduler:
     """Manages periodic execution of speed tests"""
     
-    def __init__(self, test_callback: Callable, immediate: bool = None):
+    def __init__(self, test_callback: Callable, immediate: bool = None, interval: int = None):
         self.test_callback = test_callback
         self.immediate = immediate if immediate is not None else config.IMMEDIATE_TEST
+        self.interval = interval if interval is not None else config.TEST_INTERVAL_MINUTES
         self.running = False
         self.thread = None
         
@@ -29,9 +30,9 @@ class SpeedTestScheduler:
             self.test_callback()
         
         # Schedule periodic tests
-        schedule.every(config.TEST_INTERVAL_MINUTES).minutes.do(self.run_test_job)
+        schedule.every(self.interval).minutes.do(self.run_test_job)
         
-        logger.info(f"Scheduler started. Tests will run every {config.TEST_INTERVAL_MINUTES} minutes")
+        logger.info(f"Scheduler started. Tests will run every {self.interval} minutes")
         
         # Run scheduler in background thread
         self.running = True
